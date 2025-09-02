@@ -2,6 +2,8 @@ package com.prafullkumar.crazylauncher
 
 import android.app.Application
 import com.prafullkumar.crazylauncher.appDrawer.AppDrawerViewModel
+import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.DrawerSettingsPreferenceStore
+import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.DrawerSettingsViewModel
 import com.prafullkumar.crazylauncher.home.HomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -18,9 +20,13 @@ class CrazyLauncher : Application() {
                     viewModel {
                         HomeViewModel(get())
                     }
+                    single {
+                        DrawerSettingsPreferenceStore(get())
+                    }
                     viewModel {
                         AppDrawerViewModel(get())
                     }
+                    viewModel { DrawerSettingsViewModel() }
                 }
             )
         }

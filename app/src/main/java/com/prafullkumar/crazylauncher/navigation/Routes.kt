@@ -19,6 +19,9 @@ sealed interface Routes {
 
     @Serializable
     data object WellBeingScreen: Routes
+
+    @Serializable
+    data object DrawerSettings: Routes
 }
 sealed interface SettingsRoutes {
 

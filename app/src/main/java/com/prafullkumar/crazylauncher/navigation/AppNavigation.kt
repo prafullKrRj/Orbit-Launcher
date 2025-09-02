@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.prafullkumar.crazylauncher.appDrawer.AppDrawerScreen
+import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.DrawerSettingsScreen
 import com.prafullkumar.crazylauncher.home.HomeScreen
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -26,8 +27,9 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         composable<Routes.HomeScreen> {
             HomeScreen(koinViewModel(), navController)
         }
-        composable<Routes.AppDrawerScreen> {
-            AppDrawerScreen(koinViewModel(), navController)
+        // App drawer is now handled as modal bottom sheet, removed separate route
+        composable<Routes.DrawerSettings> {
+            DrawerSettingsScreen(navController, koinViewModel())
         }
         settingsGraph(navController)
     }
