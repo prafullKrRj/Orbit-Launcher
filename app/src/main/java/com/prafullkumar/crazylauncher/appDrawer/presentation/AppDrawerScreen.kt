@@ -1,4 +1,4 @@
-package com.prafullkumar.crazylauncher.appDrawer
+package com.prafullkumar.crazylauncher.appDrawer.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,12 +42,12 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.prafullkumar.crazylauncher.appDrawer.components.AppGrid
-import com.prafullkumar.crazylauncher.appDrawer.components.AppGridWithLabels
-import com.prafullkumar.crazylauncher.appDrawer.components.AppList
-import com.prafullkumar.crazylauncher.appDrawer.components.AppListWithIcons
-import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.LayoutType
-import com.prafullkumar.crazylauncher.navigation.Routes
+import com.prafullkumar.crazylauncher.appDrawer.presentation.components.AppGrid
+import com.prafullkumar.crazylauncher.appDrawer.presentation.components.AppGridWithLabels
+import com.prafullkumar.crazylauncher.appDrawer.presentation.components.AppList
+import com.prafullkumar.crazylauncher.appDrawer.presentation.components.AppListWithIcons
+import com.prafullkumar.crazylauncher.appDrawer.presentation.drawerSettings.LayoutType
+import com.prafullkumar.crazylauncher.core.navigation.Routes
 
 @Composable
 fun AppDrawerScreen(
@@ -63,7 +63,7 @@ fun AppDrawerScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
-    
+
     var dragOffset by remember { mutableFloatStateOf(0f) }
 
     Scaffold(
@@ -95,7 +95,7 @@ fun AppDrawerScreen(
             )
         }
     ) { paddingValues ->
-        when(layoutType) {
+        when (layoutType) {
             LayoutType.LIST -> {
                 AppList(
                     paddingValues = paddingValues,
@@ -107,6 +107,7 @@ fun AppDrawerScreen(
                     scope = scope
                 )
             }
+
             LayoutType.LIST_WITH_ICONS -> {
                 AppListWithIcons(
                     paddingValues = paddingValues,
@@ -118,6 +119,7 @@ fun AppDrawerScreen(
                     scope = scope
                 )
             }
+
             LayoutType.GRID -> {
                 AppGrid(
                     paddingValues = paddingValues,
@@ -129,12 +131,12 @@ fun AppDrawerScreen(
                     scope = scope
                 )
             }
+
             LayoutType.GRID_WITH_LABELS -> {
                 AppGridWithLabels(
                     paddingValues = paddingValues,
                     groupedApps = groupedApps,
                     viewModel = viewModel,
-                    context = context,
                     focusManager = focusManager,
                     keyboardController = keyboardController,
                     scope = scope
@@ -164,7 +166,7 @@ private fun DrawerTopBar(
                 .background(MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f))
                 .align(Alignment.TopCenter)
         )
-        
+
         // Search bar
         SearchBar(
             query = query,
@@ -220,7 +222,7 @@ fun SearchBar(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 cursorColor = MaterialTheme.colorScheme.primary
-                    )
+            )
         )
 
         Box(

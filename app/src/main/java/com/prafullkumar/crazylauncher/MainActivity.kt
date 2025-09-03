@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.prafullkumar.crazylauncher.navigation.AppNavigation
+import com.prafullkumar.crazylauncher.core.navigation.AppNavigation
 import com.prafullkumar.crazylauncher.ui.theme.CrazyLauncherTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,9 +40,9 @@ class MainActivity : ComponentActivity() {
         val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
         context.startActivity(intent)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
 
         // Handle back button to prevent exiting launcher

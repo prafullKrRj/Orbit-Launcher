@@ -71,9 +71,12 @@ dependencies {
     // extended material icons
     implementation(libs.androidx.material.icons.extended)
     // room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    
     // koin
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
-
 
 }

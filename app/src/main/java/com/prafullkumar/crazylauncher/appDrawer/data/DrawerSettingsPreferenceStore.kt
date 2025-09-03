@@ -1,9 +1,11 @@
-package com.prafullkumar.crazylauncher.appDrawer.drawerSettings
+package com.prafullkumar.crazylauncher.appDrawer.data
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.prafullkumar.crazylauncher.appDrawer.presentation.drawerSettings.LayoutType
+import com.prafullkumar.crazylauncher.appDrawer.presentation.drawerSettings.SortingOrder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -26,7 +28,8 @@ class DrawerSettingsPreferenceStore(
 
     val sortingOrder: Flow<SortingOrder> = context.dataStore.data.map { preferences ->
         val sortingOrderValue =
-            preferences[stringPreferencesKey(Keys.KEY_SORTING_ORDER)] ?: SortingOrder.ALPHABETICAL.name
+            preferences[stringPreferencesKey(Keys.KEY_SORTING_ORDER)]
+                ?: SortingOrder.ALPHABETICAL.name
         SortingOrder.valueOf(sortingOrderValue)
     }
 

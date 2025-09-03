@@ -1,5 +1,7 @@
-package com.prafullkumar.crazylauncher.home.components
+package com.prafullkumar.crazylauncher.home.presentation.components
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,16 +19,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.prafullkumar.crazylauncher.home.presentation.HomeViewModel
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 @Composable
-fun WatchComposable() {
+fun WatchComposable(viewModel: HomeViewModel) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,7 +52,10 @@ fun WatchComposable() {
         // Time and AM/PM in same row
         Row(
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.clickable {
+                viewModel.launchClockApp(context)
+            }
         ) {
             Text(
                 text = SimpleDateFormat("hh:mm", Locale.getDefault()).format(currentTime.time),
@@ -72,7 +81,15 @@ fun WatchComposable() {
                 Locale.getDefault()
             ).format(currentTime.time),
             fontSize = 16.sp,
-            fontWeight = FontWeight.Normal
+            fontWeight = FontWeight.Normal,
+            modifier = Modifier.pointerInput(Unit) {
+                // Detect tap gesture
+                detectTapGestures(
+                    onTap = {
+                        viewModel.launchCalendarApp(context)
+                    }
+                )
+            }
         )
     }
 }

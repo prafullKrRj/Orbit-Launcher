@@ -1,4 +1,4 @@
-package com.prafullkumar.crazylauncher.appDrawer.drawerSettings
+package com.prafullkumar.crazylauncher.appDrawer.presentation.drawerSettings
 
 enum class LayoutType {
     LIST, LIST_WITH_ICONS, GRID, GRID_WITH_LABELS

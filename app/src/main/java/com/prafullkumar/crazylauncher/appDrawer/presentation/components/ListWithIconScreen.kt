@@ -1,4 +1,4 @@
-package com.prafullkumar.crazylauncher.appDrawer.components
+package com.prafullkumar.crazylauncher.appDrawer.presentation.components
 
 import android.content.Context
 import androidx.compose.animation.core.tween
@@ -21,6 +21,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,8 +35,9 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import com.prafullkumar.crazylauncher.appDrawer.AppDrawerViewModel
-import com.prafullkumar.crazylauncher.domain.AppInfo
+import com.prafullkumar.crazylauncher.appDrawer.presentation.AppDrawerViewModel
+import com.prafullkumar.crazylauncher.core.model.AppInfo
+import com.prafullkumar.crazylauncher.core.utils.launchApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -84,11 +89,12 @@ fun AppListWithIcons(
             items(apps, key = { it.packageName }) { app ->
                 AppItemWithIcon(
                     app = app,
-                    onClick = { viewModel.launchApp(context, app) },
+                    onClick = { launchApp(context, app) },
                     modifier = Modifier.animateItem(
                         fadeInSpec = tween(300),
                         placementSpec = tween(300)
-                    )
+                    ),
+                    viewModel = viewModel
                 )
             }
         }
@@ -99,47 +105,58 @@ fun AppListWithIcons(
 private fun AppItemWithIcon(
     app: AppInfo,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: AppDrawerViewModel
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 8.dp)
-            .background(
-                MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.4f),
-                RoundedCornerShape(16.dp)
-            )
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(44.dp)
+    var showDropDown by remember { mutableStateOf(false) }
+    Box {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick)
+                .padding(horizontal = 20.dp, vertical = 8.dp)
                 .background(
-                    MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
-                    CircleShape
+                    MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.4f),
+                    RoundedCornerShape(16.dp)
                 )
-                .padding(4.dp),
-            contentAlignment = Alignment.Center
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            app.icon?.let { drawable ->
-                Image(
-                    bitmap = drawable.toBitmap().asImageBitmap(),
-                    contentDescription = "${app.label} icon",
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(CircleShape)
-                )
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .background(
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
+                        CircleShape
+                    )
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                app.icon.let { drawable ->
+                    Image(
+                        bitmap = drawable.toBitmap().asImageBitmap(),
+                        contentDescription = "${app.label} icon",
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                    )
+                }
             }
+
+            Text(
+                text = app.label,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium
+            )
         }
-        
-        Text(
-            text = app.label,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = FontWeight.Medium
+        AppDropDownMenu(
+            expanded = showDropDown,
+            onDismiss = { showDropDown = false },
+            onUninstall = { /* TODO: viewModel.uninstallApp(app) */ },
+            onAddToFavorites = { viewModel.addToFavorites(app) },
+            onHideApp = { /* TODO: viewModel.hideApp(app) */ }
         )
     }
 }

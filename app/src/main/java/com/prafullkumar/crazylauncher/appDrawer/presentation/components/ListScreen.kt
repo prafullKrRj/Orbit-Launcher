@@ -1,9 +1,10 @@
-package com.prafullkumar.crazylauncher.appDrawer.components
+package com.prafullkumar.crazylauncher.appDrawer.presentation.components
 
 import android.content.Context
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,13 +14,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import com.prafullkumar.crazylauncher.appDrawer.AppDrawerViewModel
-import com.prafullkumar.crazylauncher.domain.AppInfo
+import com.prafullkumar.crazylauncher.appDrawer.presentation.AppDrawerViewModel
+import com.prafullkumar.crazylauncher.core.model.AppInfo
+import com.prafullkumar.crazylauncher.core.utils.launchApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -60,10 +66,11 @@ fun AppList(
             items(apps, key = { it.packageName }) { app ->
                 AppItemRow(
                     app = app,
-                    onClick = { viewModel.launchApp(context, app) },
+                    onClick = { launchApp(context, app) },
                     modifier = Modifier.animateItem(
                         fadeInSpec = tween(300), placementSpec = tween(3000)
-                    )
+                    ),
+                    viewModel = viewModel
                 )
             }
         }
@@ -72,17 +79,27 @@ fun AppList(
 
 @Composable
 private fun AppItemRow(
-    app: AppInfo, onClick: () -> Unit, modifier: Modifier = Modifier
+    app: AppInfo, onClick: () -> Unit, modifier: Modifier = Modifier, viewModel: AppDrawerViewModel
 ) {
-    Text(
-        text = app.label,
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onSurface,
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(
-                horizontal = 24.dp, vertical = 16.dp
-            ) // Generous padding for easy tapping and clean look
-    )
+    var showDropDown by remember { mutableStateOf(false) }
+    Box {
+        Text(
+            text = app.label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick)
+                .padding(
+                    horizontal = 24.dp, vertical = 16.dp
+                ) // Generous padding for easy tapping and clean look
+        )
+        AppDropDownMenu(
+            expanded = showDropDown,
+            onDismiss = { showDropDown = false },
+            onUninstall = { /* TODO: viewModel.uninstallApp(app) */ },
+            onAddToFavorites = { viewModel.addToFavorites(app) },
+            onHideApp = { /* TODO: viewModel.hideApp(app) */ }
+        )
+    }
 }

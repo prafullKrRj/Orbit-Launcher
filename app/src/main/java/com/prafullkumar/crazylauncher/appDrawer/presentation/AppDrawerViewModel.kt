@@ -1,17 +1,13 @@
-package com.prafullkumar.crazylauncher.appDrawer
+package com.prafullkumar.crazylauncher.appDrawer.presentation
 
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.DrawerSettingsPreferenceStore
-import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.DrawerSettingsViewModel
-import com.prafullkumar.crazylauncher.domain.AppInfo
-import com.prafullkumar.crazylauncher.repository.AppRepository
+import com.prafullkumar.crazylauncher.appDrawer.data.DrawerSettingsPreferenceStore
+import com.prafullkumar.crazylauncher.appDrawer.data.repository.AppDrawerRepository
+import com.prafullkumar.crazylauncher.core.model.AppInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +24,7 @@ import org.koin.core.component.inject
 
 class AppDrawerViewModel(private val applicationContext: Context) : ViewModel(), KoinComponent {
 
-
+    private val appListRepository: AppDrawerRepository by inject()
     private val preferences: DrawerSettingsPreferenceStore by inject()
 
     val layoutType = preferences.layoutType
@@ -36,8 +32,6 @@ class AppDrawerViewModel(private val applicationContext: Context) : ViewModel(),
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
-
-    private val appRepository = AppRepository(applicationContext)
 
     private val _installedApps = MutableStateFlow<List<AppInfo>>(emptyList())
 
@@ -66,7 +60,7 @@ class AppDrawerViewModel(private val applicationContext: Context) : ViewModel(),
     fun loadInstalledApps() {
         viewModelScope.launch {
             try {
-                val apps = appRepository.getInstalledApps()
+                val apps = appListRepository.getInstalledApps()
                 _installedApps.value = apps
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -75,19 +69,21 @@ class AppDrawerViewModel(private val applicationContext: Context) : ViewModel(),
         }
     }
 
-    fun launchApp(context: Context, appInfo: AppInfo) {
-        appInfo.launchIntent?.let {
-            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // Important for launching from non-Activity context
-            try {
-                context.startActivity(it)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
+
+
     fun onSearchQueryChanged(newQuery: String) {
         _searchQuery.update {
             newQuery
+        }
+    }
+
+    fun addToFavorites(app: AppInfo) {
+        viewModelScope.launch {
+            try {
+                appListRepository.addToFavourites(app)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

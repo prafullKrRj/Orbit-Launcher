@@ -1,13 +1,19 @@
-package com.prafullkumar.crazylauncher.repository
+package com.prafullkumar.crazylauncher.appDrawer.data.repository
 
 import android.content.Context
 import android.content.pm.PackageManager
-import com.prafullkumar.crazylauncher.domain.AppInfo
+import android.widget.Toast
+import com.prafullkumar.crazylauncher.core.data.local.FavDao
+import com.prafullkumar.crazylauncher.core.data.local.FavEntity
+import com.prafullkumar.crazylauncher.core.model.AppInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class AppRepository(private val context: Context) {
+class AppDrawerRepository(private val context: Context) : KoinComponent {
 
+    private val favDao by inject<FavDao>()
     suspend fun getInstalledApps(): List<AppInfo> = withContext(Dispatchers.IO) {
         try {
             val pm: PackageManager = context.packageManager
@@ -30,4 +36,18 @@ class AppRepository(private val context: Context) {
             emptyList()
         }
     }
+
+    suspend fun addToFavourites(app: AppInfo) {
+        val count = favDao.getFavoriteCount()
+        if (count >= 7) {
+            Toast.makeText(context, "You can only add up to 7 favorites", Toast.LENGTH_SHORT).show()
+            return
+        }
+        favDao.insertFavorite(
+            FavEntity(
+                packageName = app.packageName, label = app.label
+            )
+        )
+    }
+
 }

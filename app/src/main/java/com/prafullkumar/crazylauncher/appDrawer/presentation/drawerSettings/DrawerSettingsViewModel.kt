@@ -1,7 +1,8 @@
-package com.prafullkumar.crazylauncher.appDrawer.drawerSettings
+package com.prafullkumar.crazylauncher.appDrawer.presentation.drawerSettings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.prafullkumar.crazylauncher.appDrawer.data.DrawerSettingsPreferenceStore
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

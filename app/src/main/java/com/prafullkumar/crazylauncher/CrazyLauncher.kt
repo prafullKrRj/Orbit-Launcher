@@ -1,10 +1,12 @@
 package com.prafullkumar.crazylauncher
 
 import android.app.Application
-import com.prafullkumar.crazylauncher.appDrawer.AppDrawerViewModel
-import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.DrawerSettingsPreferenceStore
-import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.DrawerSettingsViewModel
-import com.prafullkumar.crazylauncher.home.HomeViewModel
+import androidx.room.Room
+import com.prafullkumar.crazylauncher.appDrawer.appDrawerModule
+import com.prafullkumar.crazylauncher.core.data.local.FavDao
+import com.prafullkumar.crazylauncher.core.data.local.FavDatabase
+import com.prafullkumar.crazylauncher.home.data.HomeRepository
+import com.prafullkumar.crazylauncher.home.presentation.HomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModel
@@ -16,17 +18,27 @@ class CrazyLauncher : Application() {
         startKoin {
             androidContext(this@CrazyLauncher)
             modules(
+                appDrawerModule,
                 module {
-                    viewModel {
-                        HomeViewModel(get())
+
+                    single<FavDatabase> {
+                        Room.databaseBuilder(
+                            get(),
+                            FavDatabase::class.java,
+                            "fav_database"
+                        ).fallbackToDestructiveMigration().build()
+                    }
+                    single<FavDao> {
+                        get<FavDatabase>().favDao()
                     }
                     single {
-                        DrawerSettingsPreferenceStore(get())
+                       HomeRepository(get(), get())
                     }
                     viewModel {
-                        AppDrawerViewModel(get())
+                        HomeViewModel(get(), get())
                     }
-                    viewModel { DrawerSettingsViewModel() }
+
+
                 }
             )
         }

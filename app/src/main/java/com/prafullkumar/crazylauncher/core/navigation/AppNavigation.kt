@@ -1,4 +1,4 @@
-package com.prafullkumar.crazylauncher.navigation
+package com.prafullkumar.crazylauncher.core.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,9 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.prafullkumar.crazylauncher.appDrawer.AppDrawerScreen
-import com.prafullkumar.crazylauncher.appDrawer.drawerSettings.DrawerSettingsScreen
-import com.prafullkumar.crazylauncher.home.HomeScreen
+import com.prafullkumar.crazylauncher.appDrawer.presentation.drawerSettings.DrawerSettingsScreen
+import com.prafullkumar.crazylauncher.home.presentation.HomeScreen
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -34,8 +33,6 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         settingsGraph(navController)
     }
 }
-
-
 
 
 fun NavGraphBuilder.settingsGraph(

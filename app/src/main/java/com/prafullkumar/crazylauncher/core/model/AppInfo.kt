@@ -1,4 +1,4 @@
-package com.prafullkumar.crazylauncher.domain
+package com.prafullkumar.crazylauncher.core.model
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
