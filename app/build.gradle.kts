@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    namespace = "com.prafullkumar.crazylauncher"
+    namespace = "com.prafullkumar.orbit"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.prafullkumar.crazylauncher"
-        minSdk = 26
+        applicationId = "com.prafullkumar.orbit"
+        minSdk = 29
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -78,5 +78,16 @@ dependencies {
     // koin
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+    // system ui controller
+    implementation(libs.accompanist.systemuicontroller)
 
+    implementation(libs.coil.compose)
+    implementation(libs.compose.charts)
+    // eshranammi charts
+//    implementation(libs.vico.compose)
+//    implementation(libs.compose.m2) // for Material 2
+//    // or
+//    implementation(libs.vico.compose.m3) // for Material 3
+    // AppCent ComposeCharts library
+//    implementation(libs.appcent.compose.charts)
 }
