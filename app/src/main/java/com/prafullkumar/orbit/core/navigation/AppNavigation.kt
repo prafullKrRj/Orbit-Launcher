@@ -6,10 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.prafullkumar.hiddenapps.hiddenAppsModule
 import com.prafullkumar.orbit.home.homeRoutes
 import com.prafullkumar.orbit.onBoarding.OnBoardingScreen
 import com.prafullkumar.orbit.settings.settingsGraph
-import com.prafullkumar.orbit.usageScreen.presentation.usageGraph
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -31,5 +31,6 @@ fun AppNavigation(
         homeRoutes(navController)
         settingsGraph(navController)
         usageGraph(navController)
+        hiddenAppsNavGraph(navController)
     }
 }

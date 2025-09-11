@@ -37,7 +37,7 @@
         </activity>
 
         <receiver
-            android:name=".core.data.AppInstallReceiver"
+            android:name=".core.receivers.AppInstallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
@@ -45,7 +45,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".core.data.AppUninstallReceiver"
+            android:name=".core.receivers.AppUninstallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />

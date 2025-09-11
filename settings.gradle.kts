@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "CrazyLauncher"
 include(":app")
- 
+include(":usage")
+include(":hiddenApps")

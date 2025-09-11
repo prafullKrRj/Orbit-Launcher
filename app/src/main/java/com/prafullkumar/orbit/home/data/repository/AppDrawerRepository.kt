@@ -2,8 +2,8 @@ package com.prafullkumar.orbit.home.data.repository
 
 import android.content.Context
 import android.widget.Toast
-import com.prafullkumar.orbit.core.data.local.FavDao
-import com.prafullkumar.orbit.core.data.local.FavEntity
+import com.prafullkumar.orbit.core.data.local.fav.FavDao
+import com.prafullkumar.orbit.core.data.local.fav.FavEntity
 import com.prafullkumar.orbit.core.model.AppInfo
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

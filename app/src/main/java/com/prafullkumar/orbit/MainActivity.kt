@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.luminance
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.prafullkumar.orbit.core.data.AppInstallReceiver
-import com.prafullkumar.orbit.core.data.AppUninstallReceiver
+import com.prafullkumar.orbit.core.receivers.AppInstallReceiver
+import com.prafullkumar.orbit.core.receivers.AppUninstallReceiver
 import com.prafullkumar.orbit.core.navigation.AppNavigation
 import com.prafullkumar.orbit.core.navigation.Routes
 import com.prafullkumar.orbit.ui.theme.CrazyLauncherTheme

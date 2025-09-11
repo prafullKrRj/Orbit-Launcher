@@ -1,14 +1,18 @@
 package com.prafullkumar.orbit.home.presentation.screens.home.components
 
+import android.content.Intent
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.flagging.Flags
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.prafullkumar.orbit.core.navigation.Routes
 import com.prafullkumar.orbit.home.presentation.screens.home.HomeViewModel
@@ -19,15 +23,21 @@ fun UsageComposable(
     navController: NavHostController
 ) {
     val context = LocalContext.current
+    val currentUsage by viewModel.currentUsage.collectAsStateWithLifecycle()
     Text(
-        text = formatUsageTime(viewModel.currentUsage),
+        text = "Wellbeing",// formatUsageTime(currentUsage),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .pointerInput(Unit) {
                 detectTapGestures {
-                    navController.navigate(Routes.UsageScreen)
+                    val intent = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.wellbeing")
+                    if (intent != null) {
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+
+                    }
                 }
             }
     )

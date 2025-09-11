@@ -3,6 +3,10 @@ package com.prafullkumar.orbit.core.navigation
 import kotlinx.serialization.Serializable
 
 sealed interface Routes {
+
+    @Serializable
+    data object HiddenApps: Routes
+
     @Serializable
     data object UsageScreen : Routes
 
@@ -26,11 +30,7 @@ sealed interface SettingsRoutes {
 
 }
 
-sealed interface UsagesRoutes {
 
-    @Serializable
-    data object UsageMain : UsagesRoutes
-}
 
 sealed interface HomeRoutes {
 

@@ -8,8 +8,6 @@ import com.prafullkumar.orbit.home.data.repository.HiddenAppsRepository
 import com.prafullkumar.orbit.home.data.repository.HomeRepository
 import com.prafullkumar.orbit.home.presentation.screens.appDrawer.AppDrawerViewModel
 import com.prafullkumar.orbit.home.presentation.screens.drawerSettings.DrawerSettingsViewModel
-import com.prafullkumar.orbit.home.presentation.screens.hiddenApps.HiddenAppsViewModel
-import com.prafullkumar.orbit.home.presentation.screens.hiddenApps.addPassword.ChangePasswordViewModel
 import com.prafullkumar.orbit.home.presentation.screens.home.HomeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -17,10 +15,10 @@ import org.koin.dsl.module
 
 val homeModule = module {
     single {
-        HomeRepository(get(), get())
+        HomeRepository(get(), get(), get())
     }
     viewModel {
-        HomeViewModel(get(), get())
+        HomeViewModel(get())
     }
     single<AppDrawerRepository> {
         AppDrawerRepository(context = get())
@@ -45,6 +43,5 @@ val homeModule = module {
     single {
         HiddenAppsRepository(get(), get())
     }
-    viewModel { ChangePasswordViewModel(get()) }
-    viewModel { HiddenAppsViewModel(get()) }
+
 }

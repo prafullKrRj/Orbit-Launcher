@@ -1,15 +1,20 @@
 package com.prafullkumar.orbit.home.data.repository
 
 import android.content.Context
-import com.prafullkumar.orbit.core.data.local.FavDao
-import com.prafullkumar.orbit.core.data.local.FavEntity
+import com.prafullkumar.orbit.core.data.local.fav.FavDao
+import com.prafullkumar.orbit.core.data.local.fav.FavEntity
+import com.prafullkumar.orbit.core.data.local.installedApps.InstalledAppsDao
 import com.prafullkumar.orbit.core.model.AppInfo
+import com.prafullkumar.usage.data.UsageDetails
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinComponent
 
 class HomeRepository(
     private val dao: FavDao,
+    private val installedAppDao: InstalledAppsDao,
     private val context: Context
 ) : KoinComponent {
 
@@ -23,6 +28,23 @@ class HomeRepository(
 
     suspend fun removeFromFavourites(currentApp: String) {
         dao.deleteFavorite(currentApp)
+    }
+
+    fun getInstalledApps(): Flow<List<AppInfo>> {
+        return installedAppDao.getAllInstalledApps().map { it -> it.map { it.toAppInfo(context) } }
+    }
+
+    fun getTotalTimeSpent(): Flow<Long> {
+        return flow {
+            while (true) {
+                val totalTime = UsageDetails.getCurrentDayPhoneUsageData(
+                    context,
+                    installedAppDao.getInstalledAppsList().map { it.packageName }.toSet()
+                )
+                emit(totalTime)
+                delay(120000) // 2 minutes
+            }
+        }
     }
 }
 

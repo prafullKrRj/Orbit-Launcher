@@ -4,37 +4,30 @@ import android.content.Context
 import android.content.Intent
 import android.provider.AlarmClock
 import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.prafullkumar.orbit.core.data.InstalledAppsCaches
-import com.prafullkumar.orbit.core.data.usageData.getTodayHourlyUsage
 import com.prafullkumar.orbit.core.model.AppInfo
 import com.prafullkumar.orbit.core.utils.uninstallAppMain
 import com.prafullkumar.orbit.home.data.repository.HomeRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import kotlin.math.max
+import java.util.Calendar
 
 class HomeViewModel(
-    private val context: Context, private val repository: HomeRepository,
+    private val repository: HomeRepository,
 ) : ViewModel(), KoinComponent {
-    private val installedAppsCaches by inject<InstalledAppsCaches>()
-    val installedApps = installedAppsCaches.getInstalledApps()
+
+
+    val installedApps = repository.getInstalledApps()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val currentUsage = repository.getTotalTimeSpent()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0L)
 
-    var currentUsage by mutableLongStateOf(0L)
     val favApps = repository.getAllFavourites()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
@@ -46,20 +39,6 @@ class HomeViewModel(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyMap()
         )
-
-    init {
-        viewModelScope.launch(Dispatchers.Default) {
-            while (isActive) {
-                // getTodayHourlyUsage returns milliseconds per hour; convert to total minutes here
-                val totalMs = getTodayHourlyUsage(
-                    context,
-                    installedApps.value.map { it.packageName }.toSet()
-                ).sumOf { it.second }
-                currentUsage = max(0L, totalMs / 60000L) // minutes
-                delay(60000)
-            }
-        }
-    }
 
     fun launchClockApp(context: Context) {
         try {
@@ -109,5 +88,14 @@ class HomeViewModel(
         } ?: run {
             Toast.makeText(context, "No camera app found", Toast.LENGTH_SHORT).show()
         }
+    }
+}
+
+fun getCalendar(): Calendar {
+    return Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
     }
 }

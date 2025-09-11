@@ -83,11 +83,6 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.compose.charts)
-    // eshranammi charts
-//    implementation(libs.vico.compose)
-//    implementation(libs.compose.m2) // for Material 2
-//    // or
-//    implementation(libs.vico.compose.m3) // for Material 3
-    // AppCent ComposeCharts library
-//    implementation(libs.appcent.compose.charts)
+    implementation(project(":usage"))
+    implementation(project(":hiddenApps"))
 }
