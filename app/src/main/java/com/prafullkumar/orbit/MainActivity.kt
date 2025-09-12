@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
@@ -45,14 +46,13 @@ class MainActivity : ComponentActivity() {
             CrazyLauncherTheme {
                 setupSystemUI()
                 navController = rememberNavController()
-
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .windowInsetsPadding(WindowInsets.statusBars),
+                        .fillMaxSize(),
                     color = MaterialTheme.colorScheme.surface
                 ) {
                     val navigationDestination = getNavigationDestination()
+                    Log.d("MainActivity", "onCreate: $navigationDestination")
                     AppNavigation(navController, navigationDestination)
                 }
             }
@@ -60,6 +60,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun getNavigationDestination(): Routes {
+        Log.d("MainActivity", "getNavigationDestination: called")
         val pref = getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE)
         return if (hasUsageStatsPermission(this) && getSystemService(RoleManager::class.java).isRoleHeld(
                 RoleManager.ROLE_HOME

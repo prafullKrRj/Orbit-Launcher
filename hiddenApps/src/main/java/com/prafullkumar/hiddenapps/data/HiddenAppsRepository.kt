@@ -65,4 +65,8 @@ class HiddenAppsRepository : KoinComponent {
         val passwordEntity = PasswordEntity(encryptedPassword = encryptedPassword)
         database.passwordDao().insertPassword(passwordEntity)
     }
+
+    suspend fun insertApp(hiddenAppsEntity: HiddenAppsEntity) {
+        database.hiddenAppsDao().insert(hiddenAppsEntity)
+    }
 }

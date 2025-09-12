@@ -3,11 +3,11 @@ package com.prafullkumar.hiddenapps.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
+import androidx.core.content.edit
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
-import androidx.core.content.edit
 
 /**
  * Utility class for password encryption/decryption and key management
@@ -81,5 +81,9 @@ class PasswordManager(private val context: Context) {
     fun verifyPassword(enteredPassword: String, storedEncryptedPassword: String): Boolean {
         val decryptedPassword = decryptPassword(storedEncryptedPassword)
         return decryptedPassword == enteredPassword
+    }
+
+    fun isPasswordSet(): Boolean {
+        return getStoredKey() != null
     }
 }

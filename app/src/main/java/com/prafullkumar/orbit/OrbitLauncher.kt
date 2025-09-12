@@ -11,7 +11,7 @@ import com.prafullkumar.orbit.core.data.local.installedApps.DatabasePopulator
 import com.prafullkumar.orbit.core.data.local.installedApps.InstalledAppsRepository
 import com.prafullkumar.orbit.core.data.local.installedApps.InstalledDatabase
 import com.prafullkumar.orbit.core.domain.PopulateDatabaseUseCase
-import com.prafullkumar.orbit.home.homeModule
+import com.prafullkumar.orbit.home.main.homeModule
 import com.prafullkumar.orbit.onBoarding.OnBoardingViewModel
 import com.prafullkumar.usage.usageModule
 import org.koin.android.ext.koin.androidContext

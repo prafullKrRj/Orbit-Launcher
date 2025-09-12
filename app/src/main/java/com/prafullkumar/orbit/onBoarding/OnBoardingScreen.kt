@@ -1,6 +1,7 @@
 package com.prafullkumar.orbit.onBoarding
 
 import android.os.Build
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -45,7 +46,7 @@ fun OnBoardingScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
-
+    Log.d("OnBoardingScreen", "OnBoardingScreen: called")
     // Refresh permissions when screen becomes visible (handles external permission changes)
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->

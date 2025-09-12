@@ -24,6 +24,6 @@ val hiddenAppsModule = module {
     single { get<HiddenAppsDatabase>().hiddenAppsDao() }
     single { HiddenAppsRepository() }
     viewModel<HiddenAppsViewModel> { HiddenAppsViewModel(get()) }
-    viewModel { SetPasswordViewModel() }
+    viewModel { SetPasswordViewModel(get(), get(), get()) }
 //    viewModel { ChangePasswordViewModel() }
 }
